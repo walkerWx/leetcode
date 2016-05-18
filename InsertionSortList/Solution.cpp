@@ -6,40 +6,25 @@ struct ListNode{
   int val;
   ListNode *next;
   ListNode(): val(0), next(NULL) {}
+  ListNode(int x): val(x), next(NULL) {}
 };
 
 class Solution{
 public:
   ListNode *insertionSortList(ListNode *head){
-    ListNode *small;
-	ListNode *large;
-	ListNode *current = head->next;
-	while(current != NULL){
-	  if(current->val <= head->val){
-	    head->next = current->next;
-		current->next = head;
-		ListNode *tmp = head;
-		head = current;
-		current = tmp->next;
-		continue;
-	  } 
-	  else{
-	    small = head;
-	    large = head->next;
-	    while(large != current){
-		  if(small->val <= current->val && large->val >= current->val){
-		    ListNode *tmp = current;
-			current = current->next;
-			small->next = tmp;
-			tmp->next = large;
-			break;
-		  }
-		  small = small->next;
-		  large = large->next;
-	    }
-		current = current->next;
-	  }
-	}
+    ListNode *dummy = new ListNode(0);
+
+    while (head != NULL) {
+      ListNode *temp = dummy;
+      ListNode *next = head->next;
+      while (temp->next != NULL && temp->next->val < head->val) {
+        temp = temp->next;
+      }
+      head->next = temp->next;
+      temp->next = head;
+      head = next;
+    }
+    return dummy->next;
   }
   void showList(ListNode *head){
     while(head != NULL){

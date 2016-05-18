@@ -7,31 +7,52 @@ using namespace std;
 class Solution {
 public:
   int numDecodings(string s) {
-    if (s.length() <= 1) {
-      return s.length;
+    if (s.length() == 0) {
+      return 0;
     }
-    vector<int> v;
-    for (int i = 0; i < s.length(); ++i) {
-      v.push_back(-1);
-    }
-    v.at(0) = 1;
-    if (s.at(s.length() - 2) == '1' || (s.at(s.length() - 2) == '2' && s.at(s.length() - 1) <= '6') ) {
-      v.at(1) = 2;
+
+    vector<int> nums;
+
+    // initialize 
+    if (isValid(s.substr(0,1))) {
+      nums.push_back(1);
     } else {
-      v.at(1) = 1;
+      return 0;
     }
+
+    nums.push_back(0);
+
+    if (isValid(s.substr(0,2))) {
+      nums[1]++;
+    }
+    if (isValid(s.substr(1,1))) {
+      nums[1]++;
+    }
+
     for (int i = 2; i < s.length(); ++i) {
-      if (s.at(s.length() - i - 1) == '1' || (s.at(s.length() - i - 1) == '2' && s.at(s.length() - i ) <= '6')) {
-        v.at(i) = v.at(i - 1) + v.at(i - 2);
-      } else {
-        v.at(i) = v.at(i - 1);
+      nums.push_back(0);
+      if (isValid(s.substr(i,1))) {
+        nums[i] += nums[i-1];
       } 
+      if (isValid(s.substr(i-1,2))) {
+        nums[i] += nums[i-2];
+      }
     }
-    for (int i : v) {
-      cout << i << " ";
+    return nums.back();
+  } 
+
+  bool isValid(string s) {
+    if (s.length() == 1) {
+      return '1' <= s[0] && s[0] <= '9';
+    } else if (s.length() == 2) {
+      if (s[0] == '1') {
+        return '0' <= s[1] && s[1] <= '9';
+      } else if (s[0] == '2') {
+        return '0' <= s[1] && s[1] <= '6';
+      }
+      return false;
     }
-    cout << endl;
-    return v.at(s.length() - 1);
+    return false;
   }
 };
 
@@ -39,6 +60,6 @@ int main() {
   string str;
   Solution s;
   while (cin >> str) {
-    s.numDecodings(str);
+    cout << s.numDecodings(str) << endl;
   }
 }

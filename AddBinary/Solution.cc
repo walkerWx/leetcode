@@ -5,20 +5,20 @@
 using namespace std;
 
 class Solution {
-public:
-  string addBinary(string a, string b) {
-    string output("");
-    reverse(a.begin(), a.end());
-    reverse(b.begin(), b.end());
-    int p, q, carry = 0;
-    int length  = max(a.length(), b.length());
-    for (int i = 0; i <= length; ++i) {
-      if (i >= a.size()) {
-        p = 0;
-      } else {
-        p = a.at(i) - '0';
-      }
-      if (i >= b.size()) {
+  public:
+    string addBinary(string a, string b) {
+      string output("");
+      reverse(a.begin(), a.end());
+      reverse(b.begin(), b.end());
+      int p, q, carry = 0;
+      int length  = max(a.length(), b.length());
+      for (int i = 0; i <= length; ++i) {
+        if (i >= a.size()) {
+          p = 0;
+        } else {
+          p = a.at(i) - '0';
+        }
+        if (i >= b.size()) {
         q = 0;
       } else {
         q = b.at(i) - '0';
